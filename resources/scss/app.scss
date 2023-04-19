@@ -217,6 +217,9 @@ body {
     padding: 6px 12px;
     border-radius: 3px;
     transition: var(--trans-delay);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &-primary {
         background: var(--col-primary);
         color: var(--col-w);
@@ -224,6 +227,46 @@ body {
     &:hover {
         &-primary {
             background: var(--col-primary-hover);
+        }
+    }
+}
+.photoPreview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px 0;
+    gap: 4px;
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: var(--trans-delay);
+        &:hover {
+            color: var(--col-b);
+            cursor: pointer;
+            background: var(--col-2);
+        }
+    }
+    &__item {
+        position: relative;
+        border: 1px solid var(--col-2);
+        padding: 2px;
+        &-addButton {
+            grid-column: 1/-1;
+        }
+    }
+    img {
+        max-width: 100%;
+    }
+    &__close {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 32px;
+        height: 32px;
+        transition: var(--trans-delay);
+        &:hover {
+            cursor: pointer;
+            transform: scale(1.1);
         }
     }
 }

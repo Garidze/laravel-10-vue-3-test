@@ -22,9 +22,9 @@ class PageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'image' => 'required|array',
-            'image.*' => 'required|image|mimes:jpg|max:2048',
+//            'title' => 'required',
+//            'image' => 'required|array',
+//            'image.*' => 'required|image|mimes:jpg|max:2048',
         ];
     }
 }

@@ -14,7 +14,7 @@ class PageController extends Controller
 
     public function store(PageRequest $request)
     {
-        dd($request->file('image'));
+        dd($request->file('images'));
 //        $request->file('image')->store('images', 'public');
         if($request->file('image'))
         {
