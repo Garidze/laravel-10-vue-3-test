@@ -225,7 +225,7 @@ body {
         color: var(--col-w);
     }
     &:hover {
-        &-primary {
+        &.btn-primary {
             background: var(--col-primary-hover);
         }
     }
