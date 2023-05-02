@@ -1,54 +1,71 @@
 <template>
     <button type="button" class="btn btn-primary" @click="createElem">Add</button>
     <div class="photoPreview">
-        <!--append section-->
+        <transition-group name="fade">
+            <div class="photoPreview__item" v-for="(img,n) in images" :key="img">
+                <img :src="urlImage(img)" alt="" class="photoPreview__img">
+                <img src="img/close-black.png" alt="" class="photoPreview__close" @click="removeElem(n)">
+            </div>
+        </transition-group>
     </div>
+    <div class="inputRender"><!-- append input file --></div>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            images: []
+            images: [],
         }
+    },
+    watch: {
+        images: {
+            handler(val, oldVal) {
+                this.renderInputs();
+            },
+            // immediate: true,
+            deep: true
+        },
     },
     methods: {
         createElem() {
             let self = this;
             let inputFile = document.createElement('input');
-            inputFile.setAttribute("type", "file");
-            inputFile.setAttribute("hidden", "");
-            inputFile.setAttribute("accept", "image/*");
+            inputFile.type = 'file';
+            inputFile.accept = 'image/*';
             inputFile.click();
             inputFile.onchange = function () {
                 if(this.files[0].type.startsWith('image/')) {
                     // let [file] = this.files; // let file = this.files[0];
                     self.images.push(this.files[0]);
-                    console.log(self.images);
-                    let imgSrc = URL.createObjectURL(this.files[0]);
-                    let photoPreviewItem = document.createElement('div');
-                    photoPreviewItem.classList.add('photoPreview__item');
-                    photoPreviewItem.innerHTML = `<img src="${imgSrc}" alt="" class="photoPreview__img">`;
-                    let btnClose = document.createElement('img');
-                    btnClose.classList.add('photoPreview__close');
-                    btnClose.src = 'img/close-black.png';
-                    btnClose.addEventListener('click', function () {
-                        this.closest('.photoPreview__item').remove();
-                    });
-                    photoPreviewItem.append(btnClose);
-
-                    let inputImage = document.createElement('input');
-                    inputImage.type = 'file';
-                    inputImage.name = 'images[]';
-                    inputImage.files = this.files;
-                    inputImage.hidden = true;
-                    photoPreviewItem.append(inputImage);
-
-                    let photoPreview = document.querySelector('.photoPreview');
-                    photoPreview.append(photoPreviewItem);
                 }
             };
-        }
+        },
+        urlImage(el) {
+            return URL.createObjectURL(el);
+        },
+        removeElem(el) {
+            this.images = this.images.filter((i, n) => {
+                return n !== el;
+            });
+            console.log(this.images);
+        },
+        renderInputs() {
+            let inputRender = document.querySelector('.inputRender');
+            inputRender.innerHTML = '';
+
+            let inputImage = document.createElement('input');
+            inputImage.type = 'file';
+            inputImage.name = 'images[]';
+            inputImage.hidden = true;
+
+            let dataTransfer = new DataTransfer();
+            this.images.forEach(i => {
+                dataTransfer.items.add(i);
+            })
+            inputImage.files = dataTransfer.files;
+            inputRender.append(inputImage);
+        },
     },
     // computed: {
     //     //
